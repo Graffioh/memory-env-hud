@@ -1,6 +1,6 @@
 [
   {
-    "prompt": "Play by making a guess and completing the memory game by selecting row1, column1 and row2, column2 each time",
+    "prompt": "Play by making a guess and completing the memory game by selecting row1, column1 and row2, column2 each time. The indexing start from 0",
     "mcp_config": {
       "local": {
         "command": "docker",
@@ -8,7 +8,7 @@
           "run",
           "--rm",
           "-i",
-          "memory-game-env:latest"
+          "memory-game-env:0.1.5"
         ]
       }
     },

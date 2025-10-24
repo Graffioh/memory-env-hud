@@ -4,17 +4,13 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
-# Copy and install MCP server dependencies
-COPY server/pyproject.toml ./server/
-RUN pip install --no-cache-dir ./server
-
-# Copy and install environment dependencies
-COPY environment/pyproject.toml ./environment/
-RUN pip install --no-cache-dir ./environment
-
-# Copy source code after dependencies
+# Copy source code first
 COPY server/ ./server/
 COPY environment/ ./environment/
+
+# Install dependencies
+RUN pip install --no-cache-dir ./server
+RUN pip install --no-cache-dir ./environment
 
 ENV ENV_SERVER_PORT=8005
 

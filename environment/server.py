@@ -19,7 +19,6 @@ app = FastAPI(title="Memory Game Environment API")
 
 game_env = GameMemory()
 
-
 class ActRequest(BaseModel):
     action: str
 
@@ -40,10 +39,6 @@ def act(request: ActRequest):
         reward = -1.0
     elif move_result == MoveResult.ERROR:
         reward = -5.0
-
-    # Add bonus if game finishes??
-    if game_env.game_over:
-        reward += 10.0
 
     game_env.last_reward = reward
     return {"reward": reward, "board": game_env.get_board_ascii(debug=False)}

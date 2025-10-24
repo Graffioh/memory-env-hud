@@ -10,7 +10,7 @@ from enums import MoveResult
 class GameMemory:
     """Text-based memory game implementation"""
 
-    def __init__(self, size: int = 4):
+    def __init__(self, size: int = 2):
         self.size = size
         self.board, self.shown = self.create_board()
         self.score = 0
@@ -32,7 +32,7 @@ class GameMemory:
     def move(self, action: str) -> bool:
         """Make a move by selecting two positions: 'r1 c1 r2 c2'"""
         if self.game_over:
-            return False
+            return MoveResult.GAME_OVER
 
         try:
             parts = action.split()
