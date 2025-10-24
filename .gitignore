@@ -1,1 +1,5 @@
 .env
+environment/__pycache__/
+environment/uv.lock
+server/__pycache__/
+server/uv.lock

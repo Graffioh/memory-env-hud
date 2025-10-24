@@ -2,18 +2,21 @@
 
 import random
 import numpy as np
-from typing import Tuple
+from typing import Tuple, Optional
+
+from enums import MoveResult
 
 
 class GameMemory:
     """Text-based memory game implementation"""
 
-    def __init__(self, size: int = 6):
+    def __init__(self, size: int = 4):
         self.size = size
         self.board, self.shown = self.create_board()
         self.score = 0
         self.game_over = False
         self.moves_made = 0
+        self.last_reward = 0
 
     def create_board(self) -> Tuple[np.ndarray, np.ndarray]:
         """Create board with pairs and shown mask"""
@@ -34,10 +37,10 @@ class GameMemory:
         try:
             parts = action.split()
             if len(parts) != 4:
-                return False
+                return MoveResult.ERROR
             r1, c1, r2, c2 = map(int, parts)
         except ValueError:
-            return False
+            return MoveResult.ERROR
 
         if not (
             0 <= r1 < self.size
@@ -45,10 +48,10 @@ class GameMemory:
             and 0 <= r2 < self.size
             and 0 <= c2 < self.size
         ):
-            return False
+            return MoveResult.INVALID
 
         if self.shown[r1, c1] or self.shown[r2, c2] or (r1, c1) == (r2, c2):
-            return False
+            return MoveResult.INVALID
 
         # Show both tiles
         self.shown[r1, c1] = True
@@ -64,13 +67,13 @@ class GameMemory:
 
         self.moves_made += 1
         self.check_game_over()
-        return True
+        return MoveResult.SUCCESS
 
     def check_game_over(self):
         """Check if all tiles are matched"""
         self.game_over = np.all(self.shown)
 
-    def get_board_ascii(self) -> str:
+    def get_board_ascii(self, debug) -> str:
         """Get ASCII representation of the board"""
         lines = []
 
@@ -83,10 +86,10 @@ class GameMemory:
                 val = self.board[i, j]
 
                 # If closed in [...] then it's shown
-                if self.shown[i, j]:
+                if self.shown[i, j] or debug:
                     row_str += f"[{val:2}]|"
                 else:
-                    row_str += f" {val:2} |"
+                    row_str += "  ?  |"
             lines.append(row_str)
             lines.append("+" + "-----+" * self.size)
 
@@ -105,6 +108,7 @@ class GameMemory:
             "score": int(self.score),
             "moves": int(self.moves_made),
             "game_over": bool(self.game_over),
+            "reward": float(self.last_reward),
         }
 
     # Proxy-friendly getter methods for multiprocessing.Manager
@@ -120,7 +124,7 @@ class GameMemory:
         """Get board size (proxy-friendly method)."""
         return self.size
 
-    def reset(self, size: int = 4):
+    def reset(self, size: Optional[int] = None):
         """Reset the game to initial state
 
         Args:
@@ -132,3 +136,4 @@ class GameMemory:
         self.score = 0
         self.game_over = False
         self.moves_made = 0
+        self.last_reward = 0

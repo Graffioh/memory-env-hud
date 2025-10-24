@@ -12,8 +12,6 @@ async def act(action: str) -> str:
     """Perform a move in the memory game by selecting two positions: 'r1 c1 r2 c2'."""
     resp = await http_client.post("/act", json={"action": action})
     data = resp.json()
-    if not data.get("success", False):
-        return "Invalid move. Try again."
     return data.get("board", "")
 
 

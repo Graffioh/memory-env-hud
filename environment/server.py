@@ -6,7 +6,8 @@ from pydantic import BaseModel
 import logging
 import sys
 
-from .game import GameMemory
+from game import GameMemory
+from enums import MoveResult
 
 logging.basicConfig(
     stream=sys.stderr,
@@ -18,8 +19,10 @@ app = FastAPI(title="Memory Game Environment API")
 
 game_env = GameMemory()
 
+
 class ActRequest(BaseModel):
     action: str
+
 
 @app.get("/health")
 def health():
@@ -29,24 +32,27 @@ def health():
 @app.post("/act")
 def act(request: ActRequest):
     reward = 0
-    success = game_env.move(request.action)
+    move_result = game_env.move(request.action)
 
-    if not success:
+    if move_result == MoveResult.SUCCESS:
+        reward = 5.0
+    elif move_result == MoveResult.INVALID:
         reward = -1.0
-    else:
-        reward = 5
+    elif move_result == MoveResult.ERROR:
+        reward = -5.0
 
-    # Add bonus if game finishes
+    # Add bonus if game finishes??
     if game_env.game_over:
-        reward += 10
+        reward += 10.0
 
-    return {"reward": reward, "board": game_env.get_board_ascii()}
+    game_env.last_reward = reward
+    return {"reward": reward, "board": game_env.get_board_ascii(debug=False)}
 
 
 @app.post("/reset")
 def reset():
     game_env.reset()
-    return {"ok": True, "board": game_env.get_board_ascii()}
+    return {"ok": True, "board": game_env.get_board_ascii(debug=False)}
 
 
 @app.get("/state")
@@ -57,4 +63,4 @@ def state():
 
 @app.get("/board")
 def board():
-    return {"board": game_env.get_board_ascii()}
+    return {"board": game_env.get_board_ascii(debug=True)}

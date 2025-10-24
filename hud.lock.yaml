@@ -1,0 +1,41 @@
+version: '1.1'
+images:
+  local: memory-game-env:0.1.0
+  full: memory-game-env:0.1.0@sha256:d2585b44c870c8acf8b85b8647d12c2c19116f825da093d7956102790b94480a
+  pushed: null
+build:
+  generatedAt: 2025-10-24T07:58:52.992339+00:00Z
+  hudVersion: 0.4.54
+  directory: memory-game-env
+  version: 0.1.0
+  sourceHash: 513e333870a4d53d14d070ce63468b04882b22da9c47fee3433f13ad66825fd6
+  sourceFiles:
+  - Dockerfile
+  - environment/README.md
+  - environment/__init__.py
+  - environment/game.py
+  - environment/pyproject.toml
+  - environment/server.py
+  - server/README.md
+  - server/__init__.py
+  - server/main.py
+  - server/pyproject.toml
+  - server/shared.py
+  - server/tools.py
+environment:
+  initializeMs: 3769
+  toolCount: 4
+tools:
+- name: act
+  description: 'Perform a move in the memory game by selecting two positions: ''r1
+    c1 r2 c2''.'
+  inputSchema: {}
+- name: setup
+  description: Initialize or reset the memory game to its starting state.
+  inputSchema: {}
+- name: show_current_board
+  description: Show the current board state.
+  inputSchema: {}
+- name: evaluate
+  description: Evaluate the game state.
+  inputSchema: {}
