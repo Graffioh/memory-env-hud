@@ -10,7 +10,7 @@ from enums import MoveResult
 class GameMemory:
     """Text-based memory game implementation"""
 
-    def __init__(self, size: int = 2):
+    def __init__(self, size: int = 4):
         self.size = size
         self.board, self.shown = self.create_board()
         self.score = 0
@@ -32,7 +32,7 @@ class GameMemory:
     def move(self, action: str) -> MoveResult:
         """Make a move by selecting two positions: 'r1 c1 r2 c2'"""
 
-        #TODO when a move is made, the agent can't actually see the number behind the '?'
+        # TODO when a move is made, the agent can't actually see the number behind the '?'
 
         if self.game_over:
             return MoveResult.GAME_OVER
@@ -70,9 +70,6 @@ class GameMemory:
             self.score += 1
             return MoveResult.MATCHING
         else:
-            # No match, hide them back
-            self.shown[r1, c1] = False
-            self.shown[r2, c2] = False
             return MoveResult.NO_MATCH
 
     def check_game_over(self):

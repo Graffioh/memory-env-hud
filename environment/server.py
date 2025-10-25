@@ -32,6 +32,13 @@ def health():
 @app.post("/act")
 def act(request: ActionRequest):
     move_result = game_env.move(request.action)
+    board_snapshot = game_env.get_board_ascii(debug=False)
+
+    # If no match, hide the cards again (to check if it's better in game.py or here)
+    r1, c1, r2, c2 = map(int, request.action.split())
+    if move_result == MoveResult.NO_MATCH:
+        game_env.shown[r1, c1] = False
+        game_env.shown[r2, c2] = False
 
     # Sparse rewarding scheme
     reward_map = {
@@ -49,7 +56,7 @@ def act(request: ActionRequest):
         "step_reward": reward,
         "last_accumulated_reward": game_env.last_accumulated_reward,
         "done": bool(game_env.game_over),
-        "board": game_env.get_board_ascii(debug=False),
+        "board": board_snapshot,
     }
 
 
