@@ -24,21 +24,22 @@ async def setup() -> str:
 
 
 @router.tool
-async def show_current_board() -> str:
-    """Show the current board state."""
-    resp = await http_client.get("/board")
-    data = resp.json()
-    return data.get("board", "")
-
-
-@router.tool
 async def evaluate() -> EvaluationResult:
     """Evaluate the game state."""
     resp = await http_client.get("/state")
     state = resp.json()
-    reward = state.get("reward", 0)
+    reward = state.get("last_accumulated_reward", 0)
     score = state.get("score", 0)
     done = state.get("game_over", False)
     return EvaluationResult(
         reward=reward, done=done, content=f"Score: {score}, Game over: {done}"
     )
+
+
+# ONLY FOR DEBUGGING
+@router.tool
+async def show_current_board() -> str:
+    """Show the current board state."""
+    resp = await http_client.get("/board")
+    data = resp.json()
+    return data.get("board", "")

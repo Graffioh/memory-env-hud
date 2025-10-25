@@ -16,7 +16,7 @@ class GameMemory:
         self.score = 0
         self.game_over = False
         self.moves_made = 0
-        self.last_reward = 0
+        self.last_accumulated_reward = 0
 
     def create_board(self) -> Tuple[np.ndarray, np.ndarray]:
         """Create board with pairs and shown mask"""
@@ -29,8 +29,11 @@ class GameMemory:
         shown = np.zeros((self.size, self.size), dtype=bool)
         return board, shown
 
-    def move(self, action: str) -> bool:
+    def move(self, action: str) -> MoveResult:
         """Make a move by selecting two positions: 'r1 c1 r2 c2'"""
+
+        #TODO when a move is made, the agent can't actually see the number behind the '?'
+
         if self.game_over:
             return MoveResult.GAME_OVER
 
@@ -57,17 +60,20 @@ class GameMemory:
         self.shown[r1, c1] = True
         self.shown[r2, c2] = True
 
-        if self.board[r1, c1] == self.board[r2, c2]:
+        self.moves_made += 1
+        self.check_game_over()
+
+        if self.game_over:
+            return MoveResult.GAME_OVER
+        elif self.board[r1, c1] == self.board[r2, c2]:
             # Match! Keep them shown
             self.score += 1
+            return MoveResult.MATCHING
         else:
             # No match, hide them back
             self.shown[r1, c1] = False
             self.shown[r2, c2] = False
-
-        self.moves_made += 1
-        self.check_game_over()
-        return MoveResult.SUCCESS
+            return MoveResult.NO_MATCH
 
     def check_game_over(self):
         """Check if all tiles are matched"""
@@ -108,7 +114,7 @@ class GameMemory:
             "score": int(self.score),
             "moves": int(self.moves_made),
             "game_over": bool(self.game_over),
-            "reward": float(self.last_reward),
+            "last_accumulated_reward": float(self.last_accumulated_reward),
         }
 
     # Proxy-friendly getter methods for multiprocessing.Manager
@@ -136,4 +142,4 @@ class GameMemory:
         self.score = 0
         self.game_over = False
         self.moves_made = 0
-        self.last_reward = 0
+        self.last_accumulated_reward = 0

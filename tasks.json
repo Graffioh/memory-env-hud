@@ -8,7 +8,7 @@
           "run",
           "--rm",
           "-i",
-          "memory-game-env:0.1.5"
+          "memory-game-env:0.1.8"
         ]
       }
     },

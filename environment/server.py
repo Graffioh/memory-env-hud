@@ -19,7 +19,8 @@ app = FastAPI(title="Memory Game Environment API")
 
 game_env = GameMemory()
 
-class ActRequest(BaseModel):
+
+class ActionRequest(BaseModel):
     action: str
 
 
@@ -29,19 +30,27 @@ def health():
 
 
 @app.post("/act")
-def act(request: ActRequest):
-    reward = 0
+def act(request: ActionRequest):
     move_result = game_env.move(request.action)
 
-    if move_result == MoveResult.SUCCESS:
-        reward = 5.0
-    elif move_result == MoveResult.INVALID:
-        reward = -1.0
-    elif move_result == MoveResult.ERROR:
-        reward = -5.0
+    # Sparse rewarding scheme
+    reward_map = {
+        MoveResult.MATCHING: 5.0,
+        MoveResult.NO_MATCH: 0.0,
+        MoveResult.INVALID: -1.0,
+        MoveResult.ERROR: -5.0,
+        MoveResult.GAME_OVER: 20.0,
+    }
 
-    game_env.last_reward = reward
-    return {"reward": reward, "board": game_env.get_board_ascii(debug=False)}
+    reward = reward_map.get(move_result, 0.0)
+    game_env.last_accumulated_reward += reward
+
+    return {
+        "step_reward": reward,
+        "last_accumulated_reward": game_env.last_accumulated_reward,
+        "done": bool(game_env.game_over),
+        "board": game_env.get_board_ascii(debug=False),
+    }
 
 
 @app.post("/reset")

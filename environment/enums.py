@@ -1,7 +1,9 @@
 from enum import Enum
 
+
 class MoveResult(Enum):
-    SUCCESS = 1
-    INVALID = 2
-    ERROR = 3
-    GAME_OVER = 4
+    MATCHING = 1
+    NO_MATCH = 2
+    INVALID = 3
+    ERROR = 4
+    GAME_OVER = 5
