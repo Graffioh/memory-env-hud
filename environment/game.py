@@ -32,8 +32,6 @@ class GameMemory:
     def move(self, action: str) -> MoveResult:
         """Make a move by selecting two positions: 'r1 c1 r2 c2'"""
 
-        # TODO when a move is made, the agent can't actually see the number behind the '?'
-
         if self.game_over:
             return MoveResult.GAME_OVER
 

@@ -1,6 +1,35 @@
 [
   {
-    "prompt": "Play by making a guess and completing the memory game by selecting row1, column1 and row2, column2 each time. The indexing start from 0",
+    "prompt": "Play by making a guess and completing the memory game by selecting row1, column1 and row2, column2 each time in this 4x4 board. The indexing start from 0",
+    "mcp_config": {
+      "local": {
+        "command": "docker",
+        "args": [
+          "run",
+          "--rm",
+          "-i",
+          "memory-game-env:0.1.12"
+        ]
+      }
+    },
+    "agent_config": {
+      "allowed_tools": [
+        "act"
+      ],
+      "append_setup_output": true
+    },
+    "setup_tool": {
+      "name": "setup",
+      "arguments": {
+        "size": 4
+      }
+    },
+    "evaluate_tool": {
+      "name": "evaluate"
+    }
+  },
+  {
+    "prompt": "Play by making a guess and completing the memory game by selecting row1, column1 and row2, column2 each time in this 2x2 board. The indexing start from 0",
     "mcp_config": {
       "local": {
         "command": "docker",
@@ -22,6 +51,35 @@
       "name": "setup",
       "arguments": {
         "size": 2
+      }
+    },
+    "evaluate_tool": {
+      "name": "evaluate"
+    }
+  },
+  {
+    "prompt": "Play by making a guess and completing the memory game by selecting row1, column1 and row2, column2 each time in this 6x6 board. The indexing start from 0",
+    "mcp_config": {
+      "local": {
+        "command": "docker",
+        "args": [
+          "run",
+          "--rm",
+          "-i",
+          "memory-game-env:0.1.12"
+        ]
+      }
+    },
+    "agent_config": {
+      "allowed_tools": [
+        "act"
+      ],
+      "append_setup_output": true
+    },
+    "setup_tool": {
+      "name": "setup",
+      "arguments": {
+        "size": 6
       }
     },
     "evaluate_tool": {
