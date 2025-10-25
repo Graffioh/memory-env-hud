@@ -16,9 +16,9 @@ async def act(action: str) -> str:
 
 
 @router.tool
-async def setup() -> str:
+async def setup(size: int) -> str:
     """Initialize or reset the memory game to its starting state."""
-    resp = await http_client.post("/reset")
+    resp = await http_client.post("/setup", json={"size": size})
     data = resp.json()
     return data.get("board", "Game reset")
 

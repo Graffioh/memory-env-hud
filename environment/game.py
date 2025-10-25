@@ -127,8 +127,8 @@ class GameMemory:
         """Get board size (proxy-friendly method)."""
         return self.size
 
-    def reset(self, size: Optional[int] = None):
-        """Reset the game to initial state
+    def setup(self, size: Optional[int] = None):
+        """Setup the game to initial state
 
         Args:
             size: Optional new board size (if not provided, keeps current size)

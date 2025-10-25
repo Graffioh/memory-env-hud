@@ -23,6 +23,9 @@ game_env = GameMemory()
 class ActionRequest(BaseModel):
     action: str
 
+class SetupRequest(BaseModel):
+    size: int
+
 
 @app.get("/health")
 def health():
@@ -60,9 +63,9 @@ def act(request: ActionRequest):
     }
 
 
-@app.post("/reset")
-def reset():
-    game_env.reset()
+@app.post("/setup")
+def setup(request: SetupRequest):
+    game_env.setup(request.size)
     return {"ok": True, "board": game_env.get_board_ascii(debug=False)}
 
 

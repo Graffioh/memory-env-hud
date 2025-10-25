@@ -8,7 +8,7 @@
           "run",
           "--rm",
           "-i",
-          "memory-game-env:0.1.10"
+          "memory-game-env:0.1.12"
         ]
       }
     },
@@ -20,7 +20,9 @@
     },
     "setup_tool": {
       "name": "setup",
-      "arguments": {}
+      "arguments": {
+        "size": 2
+      }
     },
     "evaluate_tool": {
       "name": "evaluate"
