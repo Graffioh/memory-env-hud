@@ -1,4 +1,8 @@
-# Blank Environment
+# Text-based Memory game environment
+
+<img width="1195" height="774" alt="image" src="https://github.com/user-attachments/assets/64d3fced-c4b7-4bf0-90e9-c78ec4983139" />
+
+## Blank Environment
 
 Minimal starter template for building HUD environments.
 See [docs](https://docs.hud.so/build-environments) for the complete environment design workflow.
