@@ -1,14 +1,14 @@
 version: '1.1'
 images:
-  local: memory-game-env:0.1.12
-  full: memory-game-env:0.1.12@sha256:7327259d9dfc7fe93408502c799a88b28135bdd2131614862d69c0e1ce5ae3b4
+  local: memory-game-env:0.1.13
+  full: memory-game-env:0.1.13@sha256:f702b25235f5f31cb73c2aa8430fc8b7810cf2222babd08249ddfb953c0653b1
   pushed: null
 build:
-  generatedAt: 2025-10-25T12:44:20.255831+00:00Z
+  generatedAt: 2025-10-29T21:09:44.800580+00:00Z
   hudVersion: 0.4.57
   directory: memory-game-env
-  version: 0.1.12
-  sourceHash: 8f1ca3541066957220c4bcee146f81533581bd139ddc4549ae88f55de7ac3e77
+  version: 0.1.13
+  sourceHash: a74ab1607796b5e52b23ec4634f47aed57839cdd2a9a673f726c9f10794a32a5
   sourceFiles:
   - Dockerfile
   - environment/README.md
@@ -26,7 +26,7 @@ build:
   - server/tools.py
   - server/uv.lock
 environment:
-  initializeMs: 5500
+  initializeMs: 5698
   toolCount: 4
   variables:
     _note: You can edit this section to add or modify environment variables. Provided
